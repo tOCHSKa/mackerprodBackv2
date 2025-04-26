@@ -1,0 +1,14 @@
+# Ignore the .env file
+.env
+
+# Autres fichiers/dossiers à ignorer
+node_modules
+/dist
+
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+
