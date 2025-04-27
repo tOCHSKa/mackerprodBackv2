@@ -6,10 +6,13 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { videoRoutes } from './routes/videoRoutes.js'; // CORRECT
+import { videoRoutes } from './routes/videoRoutes.js';
+import { userRoutes } from './routes/userRoutes.js';
+import { createAdminIfNotExists } from './scriptStarter/createAdminIfNotExists.js';
+import { createTableUsers } from './scriptStarter/createTableUsers.js';
+import { createDatabase } from './scriptStarter/createDatabase.js';
 
 dotenv.config();
-
 
 const app = express();
 app.use(bodyParser.json());
@@ -44,7 +47,12 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 connectToDb();
 
+// createDatabase();
+createTableUsers();
+createAdminIfNotExists();
+
 app.use('/api/videos', videoRoutes());
+app.use('/api/users', userRoutes());
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`)
