@@ -19,7 +19,7 @@ export async function createAdminIfNotExists() {
         if (users.length > 0) {
             const user = users[0];
             if (user.role === 'admin') {
-                console.log('Compte admin déjà existant.');
+                console.log('✅ Compte admin déjà existant.');
                 return;
             } else {
                 console.log('Utilisateur trouvé mais le rôle n\'est pas admin. Mise à jour du rôle.');
@@ -34,7 +34,7 @@ export async function createAdminIfNotExists() {
         const insertSql = 'INSERT INTO users (email, password, role) VALUES (?, ?, ?)';
         
         await db.query(insertSql, [ADMIN_EMAIL, hashedPassword, 'admin']);
-        console.log('Compte admin créé avec succès !');
+        console.log('✅ Compte admin créé avec succès !');
 
     } catch (error) {
         console.error('Erreur lors de la création du compte admin:', error);

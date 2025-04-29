@@ -18,7 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const corsOptions = {
-    origin: ['https://www.mackerprod.com', 'http://localhost:8080'],
+    origin: ['https://www.mackerprod.com', 'http://localhost:8080', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -47,7 +47,7 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 connectToDb();
 
-// createDatabase();
+createDatabase();
 createTableUsers();
 createAdminIfNotExists();
 
