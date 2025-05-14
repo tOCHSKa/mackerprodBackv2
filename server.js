@@ -17,13 +17,13 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-// const corsOptions = {
-//     origin: ['https://www.mackerprod.com', 'http://localhost:8080', 'http://localhost:3000'],
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-// };
+const corsOptions = {
+    origin: ['https://www.mackerprod.com', 'http://localhost:8080', 'http://localhost:3000', 'https://fontshare.netlify.app/'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 const swaggerOptions = {
     swaggerDefinition: {
