@@ -66,7 +66,7 @@ export function userRoutes() {
   
     try {
       // 🔵 Récupération de l'utilisateur
-      const [users] = await db.query('SELECT id, email, password FROM users WHERE email = ?', [email]);
+      const [users] = await db.query('SELECT role, email, password FROM users WHERE email = ?', [email]);
 
       if (!Array.isArray(users) || users.length === 0) {
         return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });
@@ -83,7 +83,7 @@ export function userRoutes() {
   
       // 🔵 Génération du token JWT
       const token = jwt.sign(
-        { id: user.id, email: user.email }, 
+        { role: user.role, email: user.email }, 
         process.env.JWT_SECRET, 
         { expiresIn: '2h' } // Token valide 2 heures
       );
@@ -91,11 +91,7 @@ export function userRoutes() {
       // 🔵 Envoi du token au client
       res.status(200).json({
         message: 'Connexion réussie.',
-        token,
-        user: {
-          id: user.id,
-          email: user.email
-        }
+        token
       });
       
     } catch (error) {

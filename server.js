@@ -17,14 +17,13 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-const corsOptions = {
-    origin: ['https://www.mackerprod.com', 'http://localhost:8080', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-};
+// const corsOptions = {
+//     origin: ['https://www.mackerprod.com', 'http://localhost:8080', 'http://localhost:3000'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+// };
 
-// Utiliser CORS pour toutes les routes
-app.use(cors(corsOptions));
+app.use(cors());
 
 const swaggerOptions = {
     swaggerDefinition: {
