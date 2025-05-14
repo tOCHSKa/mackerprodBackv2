@@ -1,6 +1,6 @@
-import { connectToDb } from '../db.js';
+const { connectToDb } = require('../db.js');
 
-export async function createTableUsers() {
+async function createTableUsers() {
     try {
         const db = await connectToDb();
 
@@ -37,3 +37,6 @@ export async function createTableUsers() {
         console.error('❌ Erreur lors de la vérification ou création de la table `users`:', error);
     }
 }
+module.exports = {
+    createTableUsers,
+  };

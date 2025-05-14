@@ -1,10 +1,10 @@
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
 dotenv.config();
 
 let db = null;
 
-export async function connectToDb() {
+async function connectToDb() {
     const timeStamp = new Date();
     const timeOnly = timeStamp.toLocaleTimeString();
   
@@ -30,7 +30,7 @@ export async function connectToDb() {
     }
 }
 
-export async function keepAlive() {
+async function keepAlive() {
     const timeStamp = new Date();
     const timeOnly = timeStamp.toLocaleTimeString();
     try {
@@ -48,3 +48,6 @@ export async function keepAlive() {
 
 // Exécuter KeepAlive toutes les 30s
 setInterval(keepAlive, 30000);
+module.exports = {
+  connectToDb,
+};

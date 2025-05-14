@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
-import { connectToDb } from '../db.js';
+const bcrypt = require('bcrypt');
+const { connectToDb } = require('../db.js');
 
-export async function createAdminIfNotExists() {
+async function createAdminIfNotExists() {
     try {
         const db = await connectToDb();
         const { ADMIN_PASSWORD, ADMIN_EMAIL } = process.env;
@@ -40,3 +40,6 @@ export async function createAdminIfNotExists() {
         console.error('Erreur lors de la création du compte admin:', error);
     }
 }
+module.exports = {
+    createAdminIfNotExists,
+  };

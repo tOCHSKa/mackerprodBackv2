@@ -1,16 +1,17 @@
-import express from 'express';
-import mysql from 'mysql2';
-import bodyParser from 'body-parser';
-import { connectToDb } from './db.js';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import { videoRoutes } from './routes/videoRoutes.js';
-import { userRoutes } from './routes/userRoutes.js';
-import { createAdminIfNotExists } from './scriptStarter/createAdminIfNotExists.js';
-import { createTableUsers } from './scriptStarter/createTableUsers.js';
-import { createDatabase } from './scriptStarter/createDatabase.js';
+const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const { connectToDb } = require('./db.js');
+const { videoRoutes } = require('./routes/videoRoutes.js');
+const { userRoutes } = require('./routes/userRoutes.js');
+const { createAdminIfNotExists } = require('./scriptStarter/createAdminIfNotExists.js');
+const { createTableUsers } = require('./scriptStarter/createTableUsers.js');
+const { createDatabase } = require('./scriptStarter/createDatabase.js');
 
 dotenv.config();
 
@@ -53,6 +54,7 @@ createAdminIfNotExists();
 app.use('/api/videos', videoRoutes());
 app.use('/api/users', userRoutes());
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`)
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

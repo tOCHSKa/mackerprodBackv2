@@ -1,6 +1,6 @@
-import { connectToDb } from '../db.js';
+const { connectToDb } = require('../db.js');
 
-export async function createDatabase() {
+async function createDatabase() {
     try {
         const db = await connectToDb();
 
@@ -13,3 +13,7 @@ export async function createDatabase() {
         console.error('Erreur lors de la création de la base de données:', error);
     }
 }
+module.exports = {
+    createDatabase,
+  };
+  

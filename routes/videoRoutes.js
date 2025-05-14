@@ -1,7 +1,6 @@
-
-import { connectToDb } from '../db.js';
-import express from 'express';
-import jwt from 'jsonwebtoken';
+const { connectToDb } = require('../db.js');
+const express = require('express');
+const jwt = require('jsonwebtoken');
 
 function authMiddleware(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -21,17 +20,12 @@ function authMiddleware(req, res, next) {
   }
 }
 
-export function videoRoutes() {
-    const router = express.Router()
-  // 🔵 READ - Obtenir toutes les vidéos
+function videoRoutes() {
+  const router = express.Router();
+
   router.get('/', authMiddleware, async (req, res) => {
-
-    const db = await connectToDb(); // Connexion à la BDD
-
-    if (!db) {
-      return res.status(500).send('Database connection error');
-    }
-
+    const db = await connectToDb();
+    if (!db) return res.status(500).send('Database connection error');
     try {
       const [rows] = await db.query('SELECT * FROM users');
       res.json(rows);
@@ -41,13 +35,9 @@ export function videoRoutes() {
     }
   });
 
-  // 🟢 CREATE - Ajouter une vidéo
   router.post('/', async (req, res) => {
-    const db = await connectToDb(); // Connexion à la BDD
-
-    if (!db) {
-      return res.status(500).send('Database connection error');
-    }
+    const db = await connectToDb();
+    if (!db) return res.status(500).send('Database connection error');
 
     const { title, url, thumbnail, visible } = req.body;
     try {
@@ -62,13 +52,9 @@ export function videoRoutes() {
     }
   });
 
-  // 🟡 UPDATE - Modifier une vidéo
   router.put('/:id', async (req, res) => {
-    const db = await connectToDb(); // Connexion à la BDD
-
-    if (!db) {
-      return res.status(500).send('Database connection error');
-    }
+    const db = await connectToDb();
+    if (!db) return res.status(500).send('Database connection error');
 
     const { id } = req.params;
     const { title, url, thumbnail, visible } = req.body;
@@ -84,13 +70,9 @@ export function videoRoutes() {
     }
   });
 
-  // 🔴 DELETE - Supprimer une vidéo
   router.delete('/:id', async (req, res) => {
-    const db = await connectToDb(); // Connexion à la BDD
-
-    if (!db) {
-      return res.status(500).send('Database connection error');
-    }
+    const db = await connectToDb();
+    if (!db) return res.status(500).send('Database connection error');
 
     const { id } = req.params;
     try {
@@ -104,3 +86,5 @@ export function videoRoutes() {
 
   return router;
 }
+
+module.exports = { videoRoutes };

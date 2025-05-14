@@ -22,6 +22,5 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.13"
-  },
-  "type": "module"
+  }
 }
