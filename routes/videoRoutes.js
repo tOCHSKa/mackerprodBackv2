@@ -27,7 +27,7 @@ function videoRoutes() {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
     try {
-      const [rows] = await db.query('SELECT * FROM users');
+      const [rows] = await db.query('SELECT * FROM Video');
       res.json(rows);
     } catch (error) {
       console.error('Error fetching videos:', error);
@@ -35,15 +35,15 @@ function videoRoutes() {
     }
   });
 
-  router.post('/', async (req, res) => {
+  router.post('/add', async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
 
-    const { title, url, thumbnail, visible } = req.body;
+    const { titre, chemin_lien, description } = req.body;
     try {
       await db.query(
-        'INSERT INTO videos (title, url, thumbnail, visible) VALUES (?, ?, ?, ?)',
-        [title, url, thumbnail, visible ?? true]
+        'INSERT INTO video (titre, chemin_lien, description) VALUES (?, ?, ?)',
+        [titre, chemin_lien, description]
       );
       res.status(201).send('Vidéo créée');
     } catch (error) {
@@ -57,11 +57,11 @@ function videoRoutes() {
     if (!db) return res.status(500).send('Database connection error');
 
     const { id } = req.params;
-    const { title, url, thumbnail, visible } = req.body;
+    const { titre, chemin_lien, description } = req.body;
     try {
       await db.query(
-        'UPDATE videos SET title = ?, url = ?, thumbnail = ?, visible = ? WHERE id = ?',
-        [title, url, thumbnail, visible, id]
+        'UPDATE video SET titre = ?, chemin_lien = ?, description = ? WHERE id_video = ?',
+        [titre, chemin_lien, description, id]
       );
       res.send('Vidéo mise à jour');
     } catch (error) {
@@ -76,7 +76,7 @@ function videoRoutes() {
 
     const { id } = req.params;
     try {
-      await db.query('DELETE FROM videos WHERE id = ?', [id]);
+      await db.query('DELETE FROM video WHERE id_video = ?', [id]);
       res.send('Vidéo supprimée');
     } catch (error) {
       console.error('Error deleting video:', error);

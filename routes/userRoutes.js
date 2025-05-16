@@ -34,7 +34,7 @@ function userRoutes() {
         }
 
         try {
-            const [rows] = await db.query('SELECT * FROM users');
+            const [rows] = await db.query('SELECT * FROM Admin');
             res.json(rows);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -64,7 +64,7 @@ function userRoutes() {
 
         try {
             // 🔵 Récupération de l'utilisateur
-            const [users] = await db.query('SELECT role, email, password FROM users WHERE email = ?', [email]);
+            const [users] = await db.query('SELECT role, email, password FROM Admin WHERE email = ?', [email]);
 
             if (!Array.isArray(users) || users.length === 0) {
                 return res.status(400).json({ message: 'Email ou mot de passe incorrect.' });

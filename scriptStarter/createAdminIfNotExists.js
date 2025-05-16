@@ -12,7 +12,7 @@ async function createAdminIfNotExists() {
             process.exit(1); // Arrêter le script si les infos sont manquantes
         }
 
-        const sql = 'SELECT * FROM admin WHERE email = ?';
+        const sql = 'SELECT * FROM Admin WHERE email = ?';
         const [users] = await db.query(sql, [ADMIN_EMAIL]);
 
         // Vérifier si un compte admin existe déjà
