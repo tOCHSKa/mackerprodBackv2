@@ -51,8 +51,18 @@ async function keepAlive() {
     }
 }
 
+async function connectToServer() {
+  const connection = await mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
+    // NE PAS mettre `database` ici !
+  });
+  return connection;
+}
+
 // Exécuter KeepAlive toutes les 30s
 setInterval(keepAlive, 30000);
 module.exports = {
-  connectToDb,
+  connectToDb, connectToServer
 };

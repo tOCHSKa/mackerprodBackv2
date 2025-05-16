@@ -12,7 +12,7 @@ async function createAdminIfNotExists() {
             process.exit(1); // Arrêter le script si les infos sont manquantes
         }
 
-        const sql = 'SELECT * FROM users WHERE email = ?';
+        const sql = 'SELECT * FROM admin WHERE email = ?';
         const [users] = await db.query(sql, [ADMIN_EMAIL]);
 
         // Vérifier si un compte admin existe déjà
@@ -23,7 +23,7 @@ async function createAdminIfNotExists() {
                 return;
             } else {
                 console.log('Utilisateur trouvé mais le rôle n\'est pas admin. Mise à jour du rôle.');
-                const updateRoleSql = 'UPDATE users SET role = ? WHERE email = ?';
+                const updateRoleSql = 'UPDATE admin SET role = ? WHERE email = ?';
                 await db.query(updateRoleSql, ['admin', ADMIN_EMAIL]);
                 return;
             }
@@ -31,7 +31,7 @@ async function createAdminIfNotExists() {
 
         // Si l'admin n'existe pas, création du compte
         const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
-        const insertSql = 'INSERT INTO users (email, password, role) VALUES (?, ?, ?)';
+        const insertSql = 'INSERT INTO admin (email, password, role) VALUES (?, ?, ?)';
         
         await db.query(insertSql, [ADMIN_EMAIL, hashedPassword, 'admin']);
         console.log('✅ Compte admin créé avec succès !');

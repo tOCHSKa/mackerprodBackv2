@@ -9,9 +9,7 @@ const swaggerUi = require('swagger-ui-express');
 const { connectToDb } = require('./db.js');
 const { videoRoutes } = require('./routes/videoRoutes.js');
 const { userRoutes } = require('./routes/userRoutes.js');
-const { createAdminIfNotExists } = require('./scriptStarter/createAdminIfNotExists.js');
-const { createTables } = require('./scriptStarter/createTable.js');
-const { createDatabase } = require('./scriptStarter/createDatabase.js');
+const { setupApp } = require('./scriptStarter/setupApp.js');
 
 dotenv.config();
 
@@ -47,9 +45,7 @@ app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 connectToDb();
 
-createDatabase();
-createTables();
-// createAdminIfNotExists();
+setupApp();
 
 app.use('/api/videos', videoRoutes());
 app.use('/api/users', userRoutes());

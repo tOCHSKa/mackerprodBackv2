@@ -5,78 +5,81 @@ async function createTables() {
     const db = await connectToDb();
 
     const sql = `
-CREATE TABLE IF NOT EXISTS Albums (
-   id_albums VARCHAR(50) PRIMARY KEY,
-   description VARCHAR(150),
+CREATE TABLE Albums (
+   id_albums INT PRIMARY KEY,
+   description VARCHAR(255),
    titre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Photo (
-   id_photo VARCHAR(50) PRIMARY KEY,
+CREATE TABLE Photo (
+   id_photo INT PRIMARY KEY,
    titre VARCHAR(50),
    date_ajout DATETIME
 );
 
-CREATE TABLE IF NOT EXISTS Video (
-   id_video VARCHAR(50) PRIMARY KEY,
-   titre VARCHAR(150),
-   description VARCHAR(255),
-   chemin_lien VARCHAR(50)
-);
-
-CREATE TABLE IF NOT EXISTS devis (
-   id_devis VARCHAR(50) PRIMARY KEY,
+CREATE TABLE Devis (
+   id_devis INT PRIMARY KEY,
    etat_devis ENUM('aucun', 'en_attente', 'confirme', 'annule', 'termine') DEFAULT 'aucun',
    created_at DATETIME,
    updated_at DATETIME,
    url VARCHAR(500)
 );
 
-CREATE TABLE IF NOT EXISTS Utilisateur (
-   id_Utilisateur VARCHAR(50) PRIMARY KEY,
-   email VARCHAR(50),
-   password VARCHAR(255)
+CREATE TABLE Admin (
+   id_admin INT PRIMARY KEY,
+   email VARCHAR(255),
+   password VARCHAR(255),
+   role ENUM('admin') DEFAULT 'admin'
 );
 
-CREATE TABLE IF NOT EXISTS Admin (
-   id_admin VARCHAR(50) PRIMARY KEY,
-   email VARCHAR(50),
-   password VARCHAR(50),
+CREATE TABLE Utilisateur (
+   id_utilisateur INT PRIMARY KEY,
+   email VARCHAR(255),
+   password VARCHAR(255),
    devis BOOLEAN DEFAULT FALSE,
-   role ENUM('admin', 'user'),
-   id_devis VARCHAR(50) NOT NULL,
-   id_Utilisateur VARCHAR(50) NOT NULL,
-   id_video VARCHAR(50) NOT NULL,
-   id_albums VARCHAR(50),
-   FOREIGN KEY (id_devis) REFERENCES devis(id_devis),
-   FOREIGN KEY (id_Utilisateur) REFERENCES Utilisateur(id_Utilisateur),
-   FOREIGN KEY (id_video) REFERENCES Video(id_video),
-   FOREIGN KEY (id_albums) REFERENCES Albums(id_albums)
+   role ENUM('user') DEFAULT 'user'
 );
 
-CREATE TABLE IF NOT EXISTS message (
-   id_message VARCHAR(255) PRIMARY KEY,
+CREATE TABLE Video (
+   id_video INT PRIMARY KEY,
+   titre VARCHAR(255),
+   description VARCHAR(255),
+   chemin_lien VARCHAR(255),
+   id_admin INT NOT NULL,
+   FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
+);
+
+CREATE TABLE Message (
+   id_message INT PRIMARY KEY,
    nom_expediteur VARCHAR(50),
    email_expediteur VARCHAR(50),
    date_envoi DATETIME,
-   id_admin VARCHAR(50) NOT NULL,
-   FOREIGN KEY (id_admin) REFERENCES Admin(id_admin)
+   id_admin INT NOT NULL,
+   FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
 );
 
-CREATE TABLE IF NOT EXISTS contient (
-   id_albums VARCHAR(50),
-   id_photo VARCHAR(50),
-   PRIMARY KEY (id_albums, id_photo),
-   FOREIGN KEY (id_albums) REFERENCES Albums(id_albums),
-   FOREIGN KEY (id_photo) REFERENCES Photo(id_photo)
+CREATE TABLE contient (
+   id_albums INT,
+   id_photo INT,
+   PRIMARY KEY(id_albums, id_photo),
+   FOREIGN KEY(id_albums) REFERENCES Albums(id_albums),
+   FOREIGN KEY(id_photo) REFERENCES Photo(id_photo)
 );
 
-CREATE TABLE IF NOT EXISTS avoir (
-   id_devis VARCHAR(50),
-   id_Utilisateur VARCHAR(50),
-   PRIMARY KEY (id_devis, id_Utilisateur),
-   FOREIGN KEY (id_devis) REFERENCES devis(id_devis),
-   FOREIGN KEY (id_Utilisateur) REFERENCES Utilisateur(id_Utilisateur)
+CREATE TABLE ajouter (
+   id_albums INT,
+   id_admin INT,
+   PRIMARY KEY(id_albums, id_admin),
+   FOREIGN KEY(id_albums) REFERENCES Albums(id_albums),
+   FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
+);
+
+CREATE TABLE creer (
+   id_utilisateur INT,
+   id_devis INT,
+   PRIMARY KEY(id_utilisateur, id_devis),
+   FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+   FOREIGN KEY(id_devis) REFERENCES Devis(id_devis)
 );
 `;
 

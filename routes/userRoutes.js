@@ -106,10 +106,10 @@ function userRoutes() {
             return res.status(500).send('Database connection error');
         }
 
-        const { email, password, confirmedpassword } = req.body;
+        const { email, password, confirmedpassword, role } = req.body;
 
         // 🔵 Vérification des champs requis
-        const champsManquants = ['email', 'password', 'confirmedpassword'].filter(champ => !req.body[champ]);
+        const champsManquants = ['email', 'password', 'confirmedpassword', 'role'].filter(champ => !req.body[champ]);
         if (champsManquants.length > 0) {
             return res.status(400).json({ message: `Les champs suivants sont manquants : ${champsManquants.join(', ')}` });
         }
@@ -153,7 +153,7 @@ function userRoutes() {
             const hashedpassword = await bcrypt.hash(password, 10);
 
             // 🔵 Insertion en base
-            await db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedpassword]);
+            await db.query('INSERT INTO users (email, password, role) VALUES (?, ?, ?)', [email, hashedpassword, role]);
 
             res.status(201).json({ message: 'Utilisateur créé avec succès.' });
 

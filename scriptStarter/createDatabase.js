@@ -1,8 +1,8 @@
-const { connectToDb } = require('../db.js');
+const { connectToServer } = require('../db.js');
 
 async function createDatabase() {
     try {
-        const db = await connectToDb();
+        const db = await connectToServer();
 
         // Essayer de créer la base de données si elle n'existe pas
         const sql = `CREATE DATABASE IF NOT EXISTS mackerprod;`;
@@ -15,5 +15,4 @@ async function createDatabase() {
 }
 module.exports = {
     createDatabase,
-  };
-  
+};
