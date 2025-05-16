@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 let db = null;
@@ -19,6 +20,10 @@ async function connectToDb() {
         user: process.env.DB_USER,
         database: process.env.DB_NAME,
         password: process.env.DB_PASSWORD,
+        multipleStatements: true,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
       });
   
       console.log(timeOnly, 'Connected to database.');
