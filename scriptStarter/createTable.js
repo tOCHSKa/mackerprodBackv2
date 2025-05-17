@@ -5,19 +5,19 @@ async function createTables() {
     const db = await connectToDb();
 
     const sql = `
-CREATE TABLE Albums (
+CREATE TABLE IF NOT EXISTS Albums (
    id_albums INT PRIMARY KEY,
    description VARCHAR(255),
    titre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Photo (
+CREATE TABLE IF NOT EXISTS Photo (
    id_photo INT PRIMARY KEY,
    titre VARCHAR(50),
    date_ajout DATETIME
 );
 
-CREATE TABLE Devis (
+CREATE TABLE IF NOT EXISTS Devis (
    id_devis INT PRIMARY KEY,
    etat_devis ENUM('aucun', 'en_attente', 'confirme', 'annule', 'termine') DEFAULT 'aucun',
    created_at DATETIME,
@@ -25,14 +25,14 @@ CREATE TABLE Devis (
    url VARCHAR(500)
 );
 
-CREATE TABLE Admin (
+CREATE TABLE IF NOT EXISTS Admin (
    id_admin INT PRIMARY KEY,
    email VARCHAR(255),
    password VARCHAR(255),
    role ENUM('admin') DEFAULT 'admin'
 );
 
-CREATE TABLE Utilisateur (
+CREATE TABLE IF NOT EXISTS Utilisateur (
    id_utilisateur INT PRIMARY KEY,
    email VARCHAR(255),
    password VARCHAR(255),
@@ -40,7 +40,7 @@ CREATE TABLE Utilisateur (
    role ENUM('user') DEFAULT 'user'
 );
 
-CREATE TABLE Video (
+CREATE TABLE IF NOT EXISTS Video (
    id_video INT PRIMARY KEY,
    titre VARCHAR(255),
    description VARCHAR(255),
@@ -49,16 +49,18 @@ CREATE TABLE Video (
    FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
 );
 
-CREATE TABLE Message (
-   id_message INT PRIMARY KEY,
-   nom_expediteur VARCHAR(50),
-   email_expediteur VARCHAR(50),
+CREATE TABLE IF NOT EXISTS Message (
+   id_message INT AUTO_INCREMENT PRIMARY KEY,
+   nom_expediteur VARCHAR(255),
+   email_expediteur VARCHAR(255),
+   numero_telephone VARCHAR(255),
+   message TEXT,
    date_envoi DATETIME,
    id_admin INT NOT NULL,
    FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
 );
 
-CREATE TABLE contient (
+CREATE TABLE IF NOT EXISTS contient (
    id_albums INT,
    id_photo INT,
    PRIMARY KEY(id_albums, id_photo),
@@ -66,7 +68,7 @@ CREATE TABLE contient (
    FOREIGN KEY(id_photo) REFERENCES Photo(id_photo)
 );
 
-CREATE TABLE ajouter (
+CREATE TABLE IF NOT EXISTS ajouter (
    id_albums INT,
    id_admin INT,
    PRIMARY KEY(id_albums, id_admin),
@@ -74,7 +76,7 @@ CREATE TABLE ajouter (
    FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
 );
 
-CREATE TABLE creer (
+CREATE TABLE IF NOT EXISTS creer (
    id_utilisateur INT,
    id_devis INT,
    PRIMARY KEY(id_utilisateur, id_devis),

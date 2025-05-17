@@ -6,6 +6,7 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+const { transporter } = require('./utils/mailer.js');
 const { connectToDb } = require('./db.js');
 const { videoRoutes } = require('./routes/videoRoutes.js');
 const { userRoutes } = require('./routes/userRoutes.js');
