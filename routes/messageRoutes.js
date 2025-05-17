@@ -1,7 +1,7 @@
 const { connectToDb } = require('../db.js');
 const express = require('express');
 const { authMiddleware } = require('../middleware/authMiddleware');
-const { sendMail } = require('../utils/mailer.js');
+const { sendMail } = require('../utils/sendMail.js');
 function messageRoutes() {
     const router = express.Router();
 
@@ -36,8 +36,43 @@ function messageRoutes() {
                 [nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, 0]
             );
             const subject = 'Votre demande a bien été enregistrée';
-            const text = 'Nous avons bien recu votre message Mr/Mme ' + nom_expediteur + ' et vous remerci de votre demande';
-            const html = '<p>Nous avons bien recu votre message Mr/Mme ' + nom_expediteur + ' et vous remerci de votre demande</p>';
+            const text = `Bonjour ${nom_expediteur},
+
+                        Je vous remercie pour votre message.
+                        
+                        Je l’ai bien reçu et ne manquerai pas de vous répondre dans les plus brefs délais.
+                        
+                        Cordialement,  
+                        Macker  
+                        Vidéaste professionnel`;
+                        const html = `
+                        <div style="
+                          font-family: 'Montserrat', Arial, sans-serif;
+                          color: #1a2026;
+                          font-size: 16px;
+                          line-height: 1.5;
+                          padding: 20px;
+                          background-color: #f9f9f9;
+                          border-radius: 8px;
+                          max-width: 600px;
+                          margin: auto;
+                        ">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <img src="https://www.mackerprod.com/img/mackerprod.3afd6702.png" alt="Logo MackerProd" style="max-width: 150px; height: auto;">
+                            </div>
+                          <p style="margin-bottom: 20px;">Bonjour <span style="font-weight: bold; color: #1a2026;">${nom_expediteur}</span>,</p>
+                          <p style="margin-bottom: 20px;">
+                            Je vous remercie pour votre message.<br>
+                            Je l’ai bien reçu et ne manquerai pas de vous répondre dans les plus brefs délais.
+                          </p>
+                          <p style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 20px; font-size: 14px; color: #555;">
+                            Cordialement,
+                          </p>
+                          <p style="margin: 0; font-weight: bold; font-size: 18px; color: #941e20;">Macker<span style="color: #1a2026;">Prod</span></p>
+                          <p style="margin: 0; font-style: italic; color: #1a2026;">Vidéaste professionnel</p>
+                        </div>
+                      `;
+                      
             sendMail(email_expediteur, subject, text, html);
             res.status(201).send('Message créé');
         } catch (error) {
