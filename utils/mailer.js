@@ -10,23 +10,6 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Test d'envoi d'email
-// (async () => {
-//     try {
-//         const info = await transporter.sendMail({
-//             from: "toch59200@gmail.com", // adresse de l'expéditeur
-//             to: "toch59200@gmail.com", // adresse du destinataire
-//             subject: "Test Email ✔", // Sujet
-//             text: "Si vous voyez cet email, le test est réussi!", // version texte
-//             html: "<b>Si vous voyez cet email, le test est réussi!</b>" // version HTML
-//         });
-
-//         console.log("Message envoyé: %s", info.messageId);
-//     } catch (err) {
-//         console.error("Erreur lors de l'envoi de l'email:", err);
-//     }
-// })();
-
 const sendMail = async (to, subject, text, html) => {
     try {
         const info = await transporter.sendMail({
@@ -45,7 +28,7 @@ const sendMail = async (to, subject, text, html) => {
 
 // Vérification de la configuration
 transporter.verify().then(() => {
-    console.log("Serveur prêt pour l'envoi d'emails");
+    console.log("✅ Serveur prêt pour l'envoi d'emails");
 }).catch((err) => {
     console.error("Erreur de configuration du serveur mail:", err);
 });

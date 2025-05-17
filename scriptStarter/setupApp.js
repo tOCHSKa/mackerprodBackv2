@@ -5,7 +5,7 @@ const { createDatabase } = require('./createDatabase.js');
 async function setupApp() {
     try {
         await createDatabase(); // Étape 1
-        console.log('✅ Base de données créée');
+        // console.log('✅ Base de données créée');
     } catch (error) {
         console.error('❌ Erreur pendant la création de la base de données :', error);
         return;
@@ -13,7 +13,7 @@ async function setupApp() {
 
     try {
         await createTables(); // Étape 2
-        console.log('✅ Tables créées');
+        // console.log('✅ Tables créées');
     } catch (error) {
         console.error('❌ Erreur pendant la création des tables :', error);
         return;
@@ -21,7 +21,7 @@ async function setupApp() {
 
     try {
         await createAdminIfNotExists(); // Étape 3
-        console.log('✅ Admin initial créé');
+        // console.log('✅ Admin initial créé');
     } catch (error) {
         console.error('❌ Erreur pendant la création de l\'admin :', error);
         return;
