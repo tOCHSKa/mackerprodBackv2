@@ -27,15 +27,14 @@ async function createAdminIfNotExists() {
                 await db.query(updateRoleSql, ['admin', ADMIN_EMAIL]);
                 return;
             }
+        } else {
+            // Si l'admin n'existe pas, création du compte
+            const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+            const insertSql = 'INSERT INTO admin (email, password, role) VALUES (?, ?, ?)';
+            
+            await db.query(insertSql, [ADMIN_EMAIL, hashedPassword, 'admin']);
+            console.log('✅ Compte admin créé avec succès !');
         }
-
-        // Si l'admin n'existe pas, création du compte
-        const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
-        const insertSql = 'INSERT INTO admin (email, password, role) VALUES (?, ?, ?)';
-        
-        await db.query(insertSql, [ADMIN_EMAIL, hashedPassword, 'admin']);
-        console.log('✅ Compte admin créé avec succès !');
-
     } catch (error) {
         console.error('Erreur lors de la création du compte admin:', error);
     }
