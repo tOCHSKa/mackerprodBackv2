@@ -8,6 +8,7 @@ function videoRoutes() {
   router.get('/', authMiddleware, async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
+    if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
     try {
       const [rows] = await db.query('SELECT * FROM Video');
       res.json(rows);
@@ -20,7 +21,7 @@ function videoRoutes() {
   router.post('/add', authMiddleware, async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
-
+    if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
     const { titre, chemin_lien, description } = req.body;
     try {
       await db.query(
@@ -37,7 +38,7 @@ function videoRoutes() {
   router.put('/:id', authMiddleware, async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
-
+    if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
     const { id } = req.params;
     const { titre, chemin_lien, description } = req.body;
     try {
@@ -55,7 +56,7 @@ function videoRoutes() {
   router.delete('/:id', authMiddleware, async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
-
+    if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
     const { id } = req.params;
     try {
       await db.query('DELETE FROM video WHERE id_video = ?', [id]);

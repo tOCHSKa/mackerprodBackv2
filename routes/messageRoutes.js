@@ -9,7 +9,7 @@ function messageRoutes() {
    router.get('/', authMiddleware, async (req, res) => {
     try {
         const db = await connectToDb(); // Connexion à la BDD
-
+        if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
         if (!db) {
             return res.status(500).send('Database connection error');
         }
@@ -79,6 +79,28 @@ function messageRoutes() {
             console.error('Error inserting message:', error);
             res.status(500).send('Error creating message');
         }
+    });
+
+    router.get('/message', async (req, res) => {
+
+      const messages = [
+        {
+          nom_expediteur: 'John Doe',
+          email_expediteur: 'john.doe@example.com',
+          numero_telephone: '123456789',
+          message: 'Ceci est un message de test.',
+          date_envoi: '2023-04-01T12:00:00Z',
+          id_admin: 1
+        }
+      ]
+      try {
+          res.status(200).json({
+              messages
+          });
+      } catch (error) {
+          console.error('Erreur lors de la requête :', error);
+          res.status(500).send('Erreur serveur');
+      }
     });
     return router;
   }
