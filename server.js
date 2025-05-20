@@ -12,6 +12,7 @@ const { videoRoutes } = require('./routes/videoRoutes.js');
 const { setupApp } = require('./scriptStarter/setupApp.js');
 const { messageRoutes} = require('./routes/messageRoutes.js');
 const { adminRoutes } = require('./routes/adminRoutes.js');
+const { utilisateurRoutes } = require('./routes/userRoutes.js');
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ setupApp();
 app.use('/api/video', videoRoutes());
 app.use('/api/admin', adminRoutes());
 app.use('/api/message', messageRoutes());
+app.use('/api/utilisateur', utilisateurRoutes());
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
