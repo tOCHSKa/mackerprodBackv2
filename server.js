@@ -9,9 +9,9 @@ const swaggerUi = require('swagger-ui-express');
 const { transporter } = require('./utils/mailer.js');
 const { connectToDb } = require('./db.js');
 const { videoRoutes } = require('./routes/videoRoutes.js');
-const { userRoutes } = require('./routes/userRoutes.js');
 const { setupApp } = require('./scriptStarter/setupApp.js');
 const { messageRoutes} = require('./routes/messageRoutes.js');
+const { adminRoutes } = require('./routes/adminRoutes.js');
 
 dotenv.config();
 
@@ -50,7 +50,7 @@ connectToDb();
 setupApp();
 
 app.use('/api/video', videoRoutes());
-app.use('/api/users', userRoutes());
+app.use('/api/admin', adminRoutes());
 app.use('/api/message', messageRoutes());
 
 const PORT = process.env.PORT || 3000;
