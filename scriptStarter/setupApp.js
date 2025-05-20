@@ -1,6 +1,7 @@
 const { createAdminIfNotExists } = require('./createAdminIfNotExists.js');
 const { createTables } = require('./createTable.js');
 const { createDatabase } = require('./createDatabase.js');
+const { createTestUserWithDevis } = require('./createTestUserWithDevis.js');
 
 async function setupApp() {
     try {
@@ -24,6 +25,11 @@ async function setupApp() {
         // console.log('✅ Admin initial créé');
     } catch (error) {
         console.error('❌ Erreur pendant la création de l\'admin :', error);
+        return;
+    } try {
+        await createTestUserWithDevis();
+    } catch (error) {
+        console.error('❌ Erreur pendant la création du user + devis :', error);
         return;
     }
 
