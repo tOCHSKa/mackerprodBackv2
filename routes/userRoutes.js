@@ -32,7 +32,7 @@ function utilisateurRoutes() {
 
         try {
             // On cherche un utilisateur avec cet email
-            const [users] = await db.query('SELECT email, password FROM utilisateur WHERE email = ?', [email]);
+            const [users] = await db.query('SELECT role, email, password FROM utilisateur WHERE email = ?', [email]);
 
             if (!Array.isArray(users) || users.length === 0) {
                 // Aucun utilisateur trouvé
