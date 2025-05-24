@@ -136,7 +136,7 @@ function adminRoutes() {
             const [users] = await db.query('SELECT id_admin FROM Admin WHERE email = ?', [email]);
 
             if (Array.isArray(users) && users.length > 0) {
-                return res.status(400).json({ message: "Cet email est déjà pris." });
+                return res.status(400).json({ message: "Cet email est déjà utilisé." });
             }
 
             // Chiffre (hash) le mot de passe avant de le stocker pour plus de sécurité

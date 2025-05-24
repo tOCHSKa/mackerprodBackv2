@@ -65,6 +65,31 @@ function utilisateurRoutes() {
             res.status(500).send('Erreur interne du serveur.');
         }
     });
+
+    router.get('/count', authMiddleware, async (req, res) => {
+        const db = await connectToDb();
+        if (!db) return res.status(500).send('Database connection error');
+        try {
+            const [rows] = await db.query('SELECT COUNT(*) as count FROM utilisateur');
+            res.json(rows[0]);
+        } catch (error) {
+            console.error('Error counting users:', error);
+            res.status(500).send('Error counting users');
+        }
+    });
+
+    router.get('/getAll', authMiddleware, async (req, res) => {
+        const db = await connectToDb();
+        if (!db) return res.status(500).send('Database connection error');
+        if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
+        try {
+            const [rows] = await db.query('SELECT * FROM utilisateur');
+            res.json(rows);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            res.status(500).send('Error fetching users');
+        }
+    });
     return router; // Retourne toutes les routes définies
 }
 

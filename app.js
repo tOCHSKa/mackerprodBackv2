@@ -1,20 +1,17 @@
+// app.js
 const express = require('express');
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
-const { transporter } = require('./utils/mailer.js');
-const { connectToDb } = require('./db.js');
-const { videoRoutes } = require('./routes/videoRoutes.js');
-const { setupApp } = require('./scriptStarter/setupApp.js');
-const { messageRoutes} = require('./routes/messageRoutes.js');
-const { adminRoutes } = require('./routes/adminRoutes.js');
-const { utilisateurRoutes } = require('./routes/userRoutes.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
+
+const { videoRoutes } = require('./routes/videoRoutes.js');
+const { messageRoutes } = require('./routes/messageRoutes.js');
+const { adminRoutes } = require('./routes/adminRoutes.js');
+const { utilisateurRoutes } = require('./routes/userRoutes.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,7 +21,6 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
-
 app.use(cors(corsOptions));
 
 const swaggerOptions = {
@@ -33,30 +29,19 @@ const swaggerOptions = {
         info: {
             title: 'BackEnd MackerProd',
             version: '0.0.1',
-            description: '',
             contact: {
                 name: 'Tochska',
             },
-            servers: [{ url: 'https://www.mackerprod.com/' }]
         }
     },
     apis: ['./routes/*.js']
-}
-
+};
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-connectToDb();
-
-setupApp();
-
 
 app.use('/api/video', videoRoutes());
 app.use('/api/admin', adminRoutes());
 app.use('/api/message', messageRoutes());
 app.use('/api/utilisateur', utilisateurRoutes());
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;

@@ -33,7 +33,7 @@ function messageRoutes() {
         try {
             await db.query(
                 'INSERT INTO message (nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, id_admin) VALUES (?, ?, ?, ?, ?, ?)',
-                [nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, 0]
+                [nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, 1]
             );
             const subject = 'Votre demande a bien été enregistrée';
             const text = `Bonjour ${nom_expediteur},
@@ -81,21 +81,14 @@ function messageRoutes() {
         }
     });
 
-    router.get('/message', async (req, res) => {
-
-      const messages = [
-        {
-          nom_expediteur: 'John Doe',
-          email_expediteur: 'john.doe@example.com',
-          numero_telephone: '123456789',
-          message: 'Ceci est un message de test.',
-          date_envoi: '2023-04-01T12:00:00Z',
-          id_admin: 1
-        }
-      ]
+    router.get('/count', authMiddleware, async (req, res) => {
+      const db = await connectToDb();
+      if (!db) return res.status(500).send('Database connection error');
+      if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
       try {
+          const [rows] = await db.query('SELECT COUNT(*) as count FROM message');
           res.status(200).json({
-              messages
+              count: rows[0].count
           });
       } catch (error) {
           console.error('Erreur lors de la requête :', error);
@@ -104,5 +97,5 @@ function messageRoutes() {
     });
     return router;
   }
-// Exporter correctement la fonction `message`
+
 module.exports = { messageRoutes }
