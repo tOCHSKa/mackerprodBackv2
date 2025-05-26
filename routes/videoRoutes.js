@@ -5,13 +5,27 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 function videoRoutes() {
   const router = express.Router();
 
-  router.get('/', authMiddleware, async (req, res) => {
+  router.get('/getAll', authMiddleware, async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
-    if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
+    if (req.user.role !== 'admin') return res.status(403).send('Forbidden');
+  
     try {
       const [rows] = await db.query('SELECT * FROM Video');
-      res.json(rows);
+  
+      // Ajout de la propriété "miniature" à chaque vidéo
+      const videosWithMiniature = rows.map(video => {
+        // Extraire l'ID de la vidéo YouTube
+        const match = video.chemin_lien.match(/embed\/([^/?]+)/);
+        const videoId = match ? match[1] : null;
+  
+        return {
+          ...video,
+          miniature: videoId
+        };
+      });
+  
+      res.json(videosWithMiniature);
     } catch (error) {
       console.error('Error fetching videos:', error);
       res.status(500).send('Error fetching videos');
@@ -22,11 +36,11 @@ function videoRoutes() {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
     if(req.user.role !== 'admin') return res.status(403).send('Forbidden');
-    const { titre, chemin_lien, description } = req.body;
+    const { titre, chemin_lien, description, theme } = req.body;
     try {
       await db.query(
-        'INSERT INTO video (titre, chemin_lien, description) VALUES (?, ?, ?)',
-        [titre, chemin_lien, description]
+        'INSERT INTO video (titre, chemin_lien, description, theme, id_admin) VALUES (?, ?, ?, ?, ?)',
+        [titre, chemin_lien, description, theme, 1]
       );
       res.status(201).send('Vidéo créée');
     } catch (error) {

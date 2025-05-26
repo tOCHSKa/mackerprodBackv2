@@ -74,6 +74,7 @@ const tables = [
           chemin_lien VARCHAR(255),
           theme ENUM('event', 'corporate', 'mariage', 'publicité', 'interview', 'immobilier'),
           id_admin INT NOT NULL,
+          isVisible BOOLEAN DEFAULT TRUE,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
           FOREIGN KEY(id_admin) REFERENCES Admin(id_admin)
