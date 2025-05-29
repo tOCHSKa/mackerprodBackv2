@@ -5,11 +5,10 @@ const { authMiddleware } = require('../middleware/authMiddleware');
 function videoRoutes() {
   const router = express.Router();
 
-  router.get('/getAll', authMiddleware, async (req, res) => {
+  router.get('/getAll',  async (req, res) => {
     const db = await connectToDb();
     if (!db) return res.status(500).send('Database connection error');
-    if (req.user.role !== 'admin') return res.status(403).send('Forbidden');
-  
+
     try {
       const [rows] = await db.query('SELECT * FROM Video');
   
