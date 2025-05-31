@@ -90,6 +90,8 @@ const tables = [
           email_expediteur VARCHAR(255),
           numero_telephone VARCHAR(255),
           message TEXT,
+          entreprise VARCHAR(255),
+          service ENUM('event', 'corporate', 'mariage', 'publicité', 'interview', 'immobilier') DEFAULT 'event',
           date_envoi DATETIME,
           id_admin INT NOT NULL,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

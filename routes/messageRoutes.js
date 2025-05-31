@@ -29,11 +29,11 @@ function messageRoutes() {
     router.post('/add', async (req, res) => {
         const db = await connectToDb();
         if (!db) return res.status(500).send('Database connection error');
-        const { nom_expediteur, email_expediteur, numero_telephone, message, date_envoi } = req.body;
+        const { nom_expediteur, email_expediteur, numero_telephone, message, entreprise, service } = req.body;
         try {
             await db.query(
-                'INSERT INTO message (nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, id_admin) VALUES (?, ?, ?, ?, ?, ?)',
-                [nom_expediteur, email_expediteur, numero_telephone, message, date_envoi, 1]
+                'INSERT INTO message (nom_expediteur, email_expediteur, numero_telephone, message, entreprise, service, date_envoi, id_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [nom_expediteur, email_expediteur, numero_telephone, message, entreprise, service, new Date(), 1]
             );
             const subject = 'Votre demande a bien été enregistrée';
             const text = `Bonjour ${nom_expediteur},
